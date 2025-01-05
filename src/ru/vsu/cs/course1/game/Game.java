@@ -164,7 +164,9 @@ public class Game {
         int newR = movingCellR + movingDirection.dr;
         int newC = movingCellC + movingDirection.dc;
         field[newR][newC] = field[movingCellR][movingCellC];
-        if (!isButtonCell(movingCellR, movingCellC)) {
+        if (isButtonCell(movingCellR, movingCellC)) {
+            field[movingCellR][movingCellC] = getRandom();
+        } else {
             field[movingCellR][movingCellC] = 0;
         }
         movingCellC = newC;
