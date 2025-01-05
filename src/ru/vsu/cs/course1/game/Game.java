@@ -171,5 +171,63 @@ public class Game {
         movingCellR = newR;
 
         isMoving = isNextCellEmpty();
+        if (!isMoving) {
+            deleteStartingFrom(movingCellR, movingCellC);
+        }
     }
+
+    private void deleteStartingFrom(int row, int col) {
+        int[][] copy = new int[fieldSze][fieldSze];
+
+        // сору without buttons
+        for (int r = 1; r < fieldSze - 1; r++) {
+            for (int c = 1; c < fieldSze - 1; c++) {
+                copy[r][c] = field[r][c];
+            }
+        }
+
+        deleteRec(copy, row, col);
+
+        if (countNeigbrows(copy) > 1) {
+            for (int r = 1; r < fieldSze - 1; r++) {
+                for (int c = 1; c < fieldSze - 1; c++) {
+                    if (copy[r][c] == -1) {
+                        field[r][c] = 0;
+                    }
+                }
+            }
+        }
+
+    }
+
+    private int countNeigbrows(int[][] m) {
+        int cnt = 0;
+        for (int[] row : m) {
+            for (int cell : row) {
+                if (cell == -1) {
+                    cnt++;
+                }
+            }
+        }
+        return cnt;
+    }
+
+    private void deleteRec(int[][] copy, int row, int col) {
+        int curValue = copy[row][col];
+        copy[row][col] = -1;
+        if (row > 0 && copy[row - 1][col] == curValue) {
+            deleteRec(copy, row - 1, col);
+        }
+        if (row < fieldSze - 1 && copy[row + 1][col] == curValue) {
+            deleteRec(copy, row + 1, col);
+        }
+        if (col > 0 && copy[row][col - 1] == curValue) {
+            deleteRec(copy, row, col - 1);
+        }
+        if (col < fieldSze - 1 && copy[row][col + 1] == curValue) {
+            deleteRec(copy, row, col + 1);
+        }
+    }
+
+
 }
