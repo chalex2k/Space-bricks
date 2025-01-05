@@ -6,7 +6,15 @@ import java.util.Random;
  * Класс, реализующий логику игры
  */
 public class Game {
+    class CellDirection {
+        public int dr;
+        public int dc;
 
+        public CellDirection(int dr, int dc){
+            this.dr = dr;
+            this.dc = dc;
+        }
+    }
     /**
      * объект Random для генерации случайных чисел
      * (можно было бы объявить как static)
@@ -159,6 +167,7 @@ public class Game {
 
     public void nextStep() {
         if (!isNextCellEmpty()) {
+            deleteStartingFrom(movingCellR, movingCellC);
             isMoving = false;
             return;
         }
@@ -172,11 +181,6 @@ public class Game {
         }
         movingCellC = newC;
         movingCellR = newR;
-
-        isMoving = isNextCellEmpty();
-        if (!isMoving) {
-            deleteStartingFrom(movingCellR, movingCellC);
-        }
     }
 
     private void deleteStartingFrom(int row, int col) {
