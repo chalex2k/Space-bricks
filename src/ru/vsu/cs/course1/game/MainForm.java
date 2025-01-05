@@ -20,7 +20,7 @@ public class MainForm extends JFrame {
     private static final int DEFAULT_ROW_COUNT = 6;
     private static final int DEFAULT_COLOR_COUNT = 7;
 
-    private static final int DEFAULT_GAP = 5;
+    private static final int DEFAULT_GAP = 1;
     private static final int DEFAULT_CELL_SIZE = 50;
 
     public static final int ANIMATION_SPEED = 3000;
@@ -43,12 +43,16 @@ public class MainForm extends JFrame {
 
     /* Демонстрация работы с таймером (удалить, если не нужно в вашей игре) */
     private int time = 0;
-    private Timer timer = new Timer(1000, e -> {
-        time++;
-        this.labelStatus.setText("Прошло времени (секунд): " + time);
-        if (game.isMoving()) {
-            this.updateView();
-            game.nextStep();
+    private Timer timer = new Timer(100, e -> {
+        time += 100;
+        if (time % 1000 == 0) {
+            this.labelStatus.setText("Прошло времени (секунд): " + time / 1000);
+        }
+        if (time % 500 == 0) {
+            if (game.isMoving()) {
+                this.updateView();
+                game.nextStep();
+            }
         }
     });
 
@@ -230,16 +234,12 @@ public class MainForm extends JFrame {
         Color color = COLORS[cellValue - 1];
 
         int size = Math.min(cellWidth, cellHeight);
-        int bound = (int) Math.round(size * 0.1);
+        int bound = (int) Math.round(size * 0.05);
 
         g2d.setColor(color);
         g2d.fillRoundRect(bound, bound, size - 2 * bound, size - 2 * bound, bound * 3, bound * 3);
         g2d.setColor(Color.DARK_GRAY);
         g2d.drawRoundRect(bound, bound, size - 2 * bound, size - 2 * bound, bound * 3, bound * 3);
-
-        g2d.setFont(getFont(size - 2 * bound));
-        g2d.setColor(DrawUtils.getContrastColor(color));
-        DrawUtils.drawStringInCenter(g2d, font, "" + cellValue, 0, 0, cellWidth, (int) Math.round(cellHeight * 0.95));
     }
 
     private void newGame() {
