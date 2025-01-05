@@ -6,33 +6,28 @@ import java.util.Random;
  * Класс, реализующий логику игры
  */
 public class Game {
-    class CellDirection {
+
+    static class CellMovingDirection {
         public int dr;
         public int dc;
 
-        public CellDirection(int dr, int dc){
+        public CellMovingDirection(int dr, int dc) {
             this.dr = dr;
             this.dc = dc;
         }
     }
-    /**
-     * объект Random для генерации случайных чисел
-     * (можно было бы объявить как static)
-     */
+
     private final Random rnd = new Random();
-    public int fieldSze = 16;
-    public int colorCount = 5;
-
-    private int[][] field = null;
-
+    private int fieldSze;
+    private int colorCount;
+    private int[][] field;
     private boolean isMoving = false;
-
     private int movingCellR, movingCellC;
-    private final CellDirection downDirection = new CellDirection(1, 0);
-    private final CellDirection upDirection = new CellDirection(-1, 0);
-    private final CellDirection leftDirection = new CellDirection(0, -1);
-    private final CellDirection rightDirection = new CellDirection(0, 1);
-    private CellDirection movingDirection;
+    private CellMovingDirection movingDirection;
+    private final CellMovingDirection downDirection = new CellMovingDirection(1, 0);
+    private final CellMovingDirection upDirection = new CellMovingDirection(-1, 0);
+    private final CellMovingDirection leftDirection = new CellMovingDirection(0, -1);
+    private final CellMovingDirection rightDirection = new CellMovingDirection(0, 1);
 
     public Game(int fieldSze, int colorCount) {
         this.fieldSze = fieldSze;
@@ -101,14 +96,13 @@ public class Game {
             return;
         }
 
-        if (row == 0 && columnHaveCell(col)) { // is top button
+        if (row == 0 && columnHasNotEmptyCell(col)) { // is top button
             movingDirection = downDirection;
-
-        } else if (row == fieldSze - 1 && columnHaveCell(col)) {
+        } else if (row == fieldSze - 1 && columnHasNotEmptyCell(col)) { // is bottom button
             movingDirection = upDirection;
-        } else if (col == 0 && rowHaveCell(row)) {
+        } else if (col == 0 && rowHasNotEmptyCell(row)) { // is left button
             movingDirection = rightDirection;
-        } else if (col == fieldSze - 1 && rowHaveCell(row)) {
+        } else if (col == fieldSze - 1 && rowHasNotEmptyCell(row)) { // is right button
             movingDirection = leftDirection;
         } else {
             return;
@@ -116,14 +110,10 @@ public class Game {
 
         movingCellR = row;
         movingCellC = col;
-        if (isNextCellEmpty()) {
-            isMoving = true;
-        }
-
-
+        isMoving = isNextCellEmpty();
     }
 
-    private boolean rowHaveCell(int row) {
+    private boolean rowHasNotEmptyCell(int row) {
         for (int c = 1; c < fieldSze - 1; c++) {
             if (field[row][c] > 0) {
                 return true;
@@ -132,7 +122,7 @@ public class Game {
         return false;
     }
 
-    private boolean columnHaveCell(int col) {
+    private boolean columnHasNotEmptyCell(int col) {
         for (int r = 1; r < fieldSze - 1; r++) {
             if (field[r][col] > 0) {
                 return true;
@@ -195,7 +185,7 @@ public class Game {
 
         deleteRec(copy, row, col);
 
-        if (countNeigbrows(copy) > 1) {
+        if (countNeighbors(copy) > 1) {
             for (int r = 1; r < fieldSze - 1; r++) {
                 for (int c = 1; c < fieldSze - 1; c++) {
                     if (copy[r][c] == -1) {
@@ -207,7 +197,7 @@ public class Game {
 
     }
 
-    private int countNeigbrows(int[][] m) {
+    private int countNeighbors(int[][] m) {
         int cnt = 0;
         for (int[] row : m) {
             for (int cell : row) {
@@ -235,6 +225,4 @@ public class Game {
             deleteRec(copy, row, col + 1);
         }
     }
-
-
 }
