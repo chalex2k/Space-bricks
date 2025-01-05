@@ -20,8 +20,10 @@ public class MainForm extends JFrame {
     private static final int DEFAULT_ROW_COUNT = 6;
     private static final int DEFAULT_COLOR_COUNT = 7;
 
-    private static final int DEFAULT_GAP = 8;
-    private static final int DEFAULT_CELL_SIZE = 70;
+    private static final int DEFAULT_GAP = 5;
+    private static final int DEFAULT_CELL_SIZE = 50;
+
+    public static final int ANIMATION_SPEED = 3000;
 
     private static final Color[] COLORS = {
             Color.BLUE,
@@ -44,6 +46,10 @@ public class MainForm extends JFrame {
     private Timer timer = new Timer(1000, e -> {
         time++;
         this.labelStatus.setText("Прошло времени (секунд): " + time);
+        if (game.isMoving()) {
+            this.updateView();
+            game.nextStep();
+        }
     });
 
     private ParamsDialog dialogParams;
@@ -103,7 +109,6 @@ public class MainForm extends JFrame {
                 int col = tableGameField.columnAtPoint(e.getPoint());
                 if (SwingUtilities.isLeftMouseButton(e)) {
                     game.leftMouseClick(row, col);
-                    updateView();
                 }
             }
         });

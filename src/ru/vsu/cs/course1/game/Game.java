@@ -17,6 +17,9 @@ public class Game {
 
     private int[][] field = null;
 
+    private boolean isMoving = false;
+    private int stepCounter = 5;
+
     public Game() {
     }
 
@@ -75,18 +78,16 @@ public class Game {
     }
 
     public void leftMouseClick(int row, int col) {
+        if (isMoving){
+            return;
+        }
         if (!isButtonCell(row, col)) {
             return;
         }
 
-        int rowCount = getRowCount(), colCount = getColCount();
-        if (row < 0 || row >= rowCount || col < 0 || col >= colCount) {
-            return;
-        }
-
-        field[row][col] = rnd.nextInt(
-
-                getColorCount()) + 1;
+        stepCounter = 3;
+        field[1][1] = getRandom();
+        isMoving = true;
     }
 
     public int getRowCount() {
@@ -103,5 +104,16 @@ public class Game {
 
     public int getCell(int row, int col) {
         return (row < 0 || row >= getRowCount() || col < 0 || col >= getColCount()) ? 0 : field[row][col];
+    }
+
+    public boolean isMoving() {
+        return isMoving;
+    }
+
+    public void nextStep() {
+        field[1][1] = getRandom();
+        System.out.println(field[1][1]);
+        stepCounter--;
+        isMoving = stepCounter > 0;
     }
 }
