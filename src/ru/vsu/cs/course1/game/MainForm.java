@@ -47,7 +47,8 @@ public class MainForm extends JFrame {
         time += 100;
         if (time % 1000 == 0) {
             this.labelStatus.setText("Прошло времени (секунд): " + time / 1000);
-
+        }
+        if (time % 500 == 0) {
             if (game.isMoving()) {
                 this.updateView();
                 game.nextStep();

@@ -84,7 +84,7 @@ public class Game {
     }
 
     public void leftMouseClick(int row, int col) {
-        if (isMoving){
+        if (isMoving) {
             return;
         }
         if (!isButtonCell(row, col)) {
@@ -93,18 +93,38 @@ public class Game {
 
         if (row == 0 && columnHaveCell(col)) { // is top button
             movingDirection = downDirection;
-            movingCellR = 0;
-            movingCellC = col;
-            if (isNextCellEmpty()){
-                isMoving = true;
-            }
+
+        } else if (row == fieldSze - 1 && columnHaveCell(col)) {
+            movingDirection = upDirection;
+        } else if (col == 0 && rowHaveCell(row)) {
+            movingDirection = rightDirection;
+        } else if (col == fieldSze - 1 && rowHaveCell(row)) {
+            movingDirection = leftDirection;
+        } else {
+            return;
         }
+
+        movingCellR = row;
+        movingCellC = col;
+        if (isNextCellEmpty()) {
+            isMoving = true;
+        }
+
 
     }
 
+    private boolean rowHaveCell(int row) {
+        for (int c = 1; c < fieldSze - 1; c++) {
+            if (field[row][c] > 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private boolean columnHaveCell(int col) {
-        for ( int r = 1; r < fieldSze - 1; r++){
-            if (field[r][col] > 0){
+        for (int r = 1; r < fieldSze - 1; r++) {
+            if (field[r][col] > 0) {
                 return true;
             }
         }
@@ -136,7 +156,7 @@ public class Game {
     }
 
     public void nextStep() {
-        if (!isNextCellEmpty()){
+        if (!isNextCellEmpty()) {
             System.out.println("неожиданный вызов nextStep");
             isMoving = false;
             return;
