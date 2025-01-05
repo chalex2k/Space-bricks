@@ -69,13 +69,24 @@ public class Game {
         return rnd.nextInt(getColorCount()) + 1;
     }
 
+    private boolean isButtonCell(int row, int col) {
+        return ((row == 0 || row == fieldSze - 1) && 0 < col && col < fieldSze - 1) ||
+                ((col == 0 || col == fieldSze - 1) && 0 < row && row < fieldSze - 1);
+    }
+
     public void leftMouseClick(int row, int col) {
+        if (!isButtonCell(row, col)) {
+            return;
+        }
+
         int rowCount = getRowCount(), colCount = getColCount();
         if (row < 0 || row >= rowCount || col < 0 || col >= colCount) {
             return;
         }
 
-        field[row][col] = rnd.nextInt(getColorCount()) + 1;
+        field[row][col] = rnd.nextInt(
+
+                getColorCount()) + 1;
     }
 
     public void rightMouseClick(int row, int col) {
