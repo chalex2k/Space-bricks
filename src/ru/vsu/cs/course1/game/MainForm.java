@@ -242,7 +242,7 @@ public class MainForm extends JFrame {
     }
 
     private void newGame() {
-        game.newGame(params.getRowCount(), params.getColCount(), params.getColorCount());
+        game.newGame();
         JTableUtils.resizeJTable(tableGameField,
                 game.getRowCount(), game.getColCount(),
                 tableGameField.getRowHeight(), tableGameField.getRowHeight()
