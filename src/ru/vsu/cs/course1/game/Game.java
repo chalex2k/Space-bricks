@@ -12,8 +12,8 @@ public class Game {
      * (можно было бы объявить как static)
      */
     private final Random rnd = new Random();
-    public final int fieldSze = 16;
-    public final int colorCount = 5;
+    public int fieldSze = 16;
+    public int colorCount = 5;
 
     private int[][] field = null;
 
@@ -26,7 +26,9 @@ public class Game {
     private final CellDirection rightDirection = new CellDirection(0, 1);
     private CellDirection movingDirection;
 
-    public Game() {
+    public Game(int fieldSze, int colorCount) {
+        this.fieldSze = fieldSze;
+        this.colorCount = colorCount;
     }
 
     public void newGame() {
@@ -157,7 +159,6 @@ public class Game {
 
     public void nextStep() {
         if (!isNextCellEmpty()) {
-            System.out.println("неожиданный вызов nextStep");
             isMoving = false;
             return;
         }
