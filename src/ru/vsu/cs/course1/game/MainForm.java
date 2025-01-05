@@ -105,10 +105,6 @@ public class MainForm extends JFrame {
                     game.leftMouseClick(row, col);
                     updateView();
                 }
-                if (SwingUtilities.isRightMouseButton(e)) {
-                    game.rightMouseClick(row, col);
-                    updateView();
-                }
             }
         });
 
