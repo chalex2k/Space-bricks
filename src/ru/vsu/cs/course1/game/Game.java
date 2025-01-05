@@ -18,7 +18,13 @@ public class Game {
     private int[][] field = null;
 
     private boolean isMoving = false;
-    private int stepCounter = 5;
+
+    private int movingCellR, movingCellC;
+    private final CellDirection downDirection = new CellDirection(1, 0);
+    private final CellDirection upDirection = new CellDirection(-1, 0);
+    private final CellDirection leftDirection = new CellDirection(0, -1);
+    private final CellDirection rightDirection = new CellDirection(0, 1);
+    private CellDirection movingDirection;
 
     public Game() {
     }
@@ -85,9 +91,24 @@ public class Game {
             return;
         }
 
-        stepCounter = 3;
-        field[1][1] = getRandom();
-        isMoving = true;
+        if (row == 0 && columnHaveCell(col)) { // is top button
+            movingDirection = downDirection;
+            movingCellR = 0;
+            movingCellC = col;
+            if (isNextCellEmpty()){
+                isMoving = true;
+            }
+        }
+
+    }
+
+    private boolean columnHaveCell(int col) {
+        for ( int r = 1; r < fieldSze - 1; r++){
+            if (field[r][col] > 0){
+                return true;
+            }
+        }
+        return false;
     }
 
     public int getRowCount() {
@@ -110,10 +131,25 @@ public class Game {
         return isMoving;
     }
 
+    private boolean isNextCellEmpty() {
+        return field[movingCellR + movingDirection.dr][movingCellC + movingDirection.dc] == 0;
+    }
+
     public void nextStep() {
-        field[1][1] = getRandom();
-        System.out.println(field[1][1]);
-        stepCounter--;
-        isMoving = stepCounter > 0;
+        if (!isNextCellEmpty()){
+            System.out.println("неожиданный вызов nextStep");
+            isMoving = false;
+            return;
+        }
+        int newR = movingCellR + movingDirection.dr;
+        int newC = movingCellC + movingDirection.dc;
+        field[newR][newC] = field[movingCellR][movingCellC];
+        if (!isButtonCell(movingCellR, movingCellC)) {
+            field[movingCellR][movingCellC] = 0;
+        }
+        movingCellC = newC;
+        movingCellR = newR;
+
+        isMoving = isNextCellEmpty();
     }
 }
