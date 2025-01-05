@@ -20,7 +20,7 @@ public class MainForm extends JFrame {
     private static final int DEFAULT_GAP = 1;
     private static final int DEFAULT_CELL_SIZE = 50;
 
-    public static final int ANIMATION_SPEED_MS = 100;
+    public static final int ANIMATION_SPEED_MS = 150;
 
     private static final Color[] COLORS = {
             Color.BLUE,
